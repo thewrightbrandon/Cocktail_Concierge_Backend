@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DrinksAPI.Migrations
 {
     [DbContext(typeof(DrinkContext))]
-    [Migration("20210604225558_InitialCreate")]
+    [Migration("20210605182017_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
