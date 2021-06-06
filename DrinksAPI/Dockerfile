@@ -23,4 +23,5 @@ RUN dotnet publish "DrinksAPI.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "DrinksAPI.dll"]
+# ENTRYPOINT ["dotnet", "DrinksAPI.dll"]
+CMD ASPNETCORE_URLS=http://*:$PORT dotnet DrinksAPI.dll
