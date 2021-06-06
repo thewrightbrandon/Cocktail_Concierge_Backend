@@ -32,7 +32,14 @@ namespace DrinksAPI
         public void ConfigureServices(IServiceCollection services)
         {
 
-            // The collects all our controllers for routing
+            services.AddCors(options => options.AddPolicy("MyPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
+
+            // Collects all our controllers for routing
             services.AddControllers();
 
             // We save the connection string appsettings.json in a variable
@@ -57,21 +64,23 @@ namespace DrinksAPI
             }
 
             // forces site to redirect to https, comment out for now
-            // app.UseHttpsRedirection();
+            // app.UseHttpsRedirection()
 
             app.UseRouting(); // enables writing
 
             app.UseAuthorization(); // enables authorization
 
+            app.UseCors("MyPolicy"); // enables CORS
+
             // this function is where we define all our routing
             app.UseEndpoints(endpoints =>
             {
-                    // Enable Attribute Routing
-                    endpoints.MapControllers();
-                    // Enable Pattern Matching
-                    endpoints.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{URLParam?}");
+                // Enable Attribute Routing
+                endpoints.MapControllers().RequireCors("MyPolicy");
+                // Enable Pattern Matching
+                endpoints.MapControllerRoute(
+            name: "default",
+            pattern: "{controller=Home}/{action=Index}/{URLParam?}");
             });
         }
     }
