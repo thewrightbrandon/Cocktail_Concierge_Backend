@@ -17,13 +17,13 @@ namespace DrinksAPI.Controllers
         // declare property to hold Database Context
         private readonly DrinkContext drinks;
 
-        // define constructor to receive database context via DI
+        // define constructor to receive database context via Dependency Injection
         public DrinksController(DrinkContext drinksCtx)
         {
             drinks = drinksCtx;
         }
 
-        [HttpGet] // get request to /drinks
+        [HttpGet] // get request to "/drinks"
         public IEnumerable<Drink> Index()
         {
             // return all the drinks
@@ -35,9 +35,9 @@ namespace DrinksAPI.Controllers
         {
             // add a drink
             drinks.Drinks.Add(Drink);
-            // save changes
+
             drinks.SaveChanges();
-            // return all the drinks
+
             return drinks.Drinks.ToList();
         }
 
@@ -48,7 +48,7 @@ namespace DrinksAPI.Controllers
             return drinks.Drinks.FirstOrDefault(x => x.Id == id);
         }
 
-        [HttpPut("{id}")] // put request to "drinks/{id}
+        [HttpPut("{id}")] // put request to "drinks/{id}"
         public IEnumerable<Drink> Update([FromBody] Drink Drink, long id)
         {
             // retrieve Drink to be updated
@@ -58,22 +58,22 @@ namespace DrinksAPI.Controllers
             oldDrink.Alcohol = Drink.Alcohol;
             oldDrink.Profile = Drink.Profile;
             oldDrink.Image = Drink.Image;
-            // Save changes
+
             drinks.SaveChanges();
-            // return updated list of drinks
+
             return drinks.Drinks.ToList();
         }
 
-        [HttpDelete("{id}")] // delete request to "drinks/{id}
+        [HttpDelete("{id}")] // delete request to "drinks/{id}"
         public IEnumerable<Drink> Destroy(long id)
         {
             //retrieve existing drink
             Drink oldDrink= drinks.Drinks.FirstOrDefault(x => x.Id == id);
             //remove them
             drinks.Drinks.Remove(oldDrink);
-            // saves changes
+
             drinks.SaveChanges();
-            // return updated list of turtles
+
             return drinks.Drinks.ToList();
         }
     }
