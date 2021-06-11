@@ -19,16 +19,16 @@ namespace DrinksAPI
 {
     public class Startup
     {
-        // Constructor: Grabbing the configurtation object that will let us grab variables from appsettings.
+        // Constructor -> grabbing the config object
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        // the property to receive the configuration object
+        // the property to receive the config object
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        // method is used to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
 
@@ -42,7 +42,6 @@ namespace DrinksAPI
             // Collects all our controllers for routing
             services.AddControllers();
 
-            // We save the connection string appsettings.json in a variable
             var connectionString = Configuration["DbContextSettings:ConnectionString"];
             // We register the db context as a service
             services.AddDbContext<DrinkContext>(opt => opt.UseNpgsql(connectionString));
@@ -53,7 +52,7 @@ namespace DrinksAPI
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        // method is used to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -63,16 +62,15 @@ namespace DrinksAPI
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "DrinksAPI v1"));
             }
 
-            // forces site to redirect to https, comment out for now
             // app.UseHttpsRedirection()
 
-            app.UseRouting(); // enables writing
+            app.UseRouting();
 
-            app.UseAuthorization(); // enables authorization
+            app.UseAuthorization();
 
             app.UseCors("MyPolicy"); // enables CORS
 
-            // this function is where we define all our routing
+            // define the routing
             app.UseEndpoints(endpoints =>
             {
                 // Enable Attribute Routing
